@@ -14,7 +14,23 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@react-barcode-scanners/shared/data-access/models": [
+        "libs/shared/data-access/models/src/index.ts"
+      ],
+      "@react-barcode-scanners/web/shell/router": ["libs/web/shell/router/src/index.ts"],
+      "@react-barcode-scanners/web/ui/layout/barcode-scanner": [
+        "libs/web/ui/layout/barcode-scanner/src/index.ts"
+      ],
+      "@react-barcode-scanners/web/ui/page/home": ["libs/web/ui/page/home/src/index.ts"],
+      "@react-barcode-scanners/web/ui/page/html5-qrcode": [
+        "libs/web/ui/page/html5-qrcode/src/index.ts"
+      ],
+      "@react-barcode-scanners/web/ui/page/rxing-wasm": [
+        "libs/web/ui/page/rxing-wasm/src/index.ts"
+      ],
+      "@react-barcode-scanners/web/ui/page/zxing-js": ["libs/web/ui/page/zxing-js/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
