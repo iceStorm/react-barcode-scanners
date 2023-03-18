@@ -5,9 +5,12 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@zxing/library": "^0.19.2",
+    "html5-qrcode": "^2.3.7",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.8.1"
+    "react-router-dom": "6.8.1",
+    "rxing-wasm": "^0.1.17"
   },
   "devDependencies": {
     "@nrwl/cypress": "15.8.7",
