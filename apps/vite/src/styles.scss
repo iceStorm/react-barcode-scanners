@@ -1,4 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* You can add global styles to this file, and also import other style files */
+
+.button {
+  @apply bg-white hover:bg-gray-200;
+  @apply px-5 rounded-full;
+  @apply transition-all duration-300;
+}

@@ -1,24 +1,30 @@
+import clsx from 'clsx'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
+
+import styles from './LayoutBarcodeScanner.module.scss'
 
 export function LayoutBarcodeScanner() {
   const [scannedParcels, setScannedParcels] = useState(0)
 
   return (
-    <div>
-      <header>
-        <h1>{scannedParcels}</h1>
-        <p>parcels scanned successfully</p>
+    <div className={clsx('flex flex-col h-screen')}>
+      <header className={clsx('bg-black text-white p-5')}>
+        <div className="text-center">
+          <h1 className="text-6xl font-bold mb-3">{scannedParcels}</h1>
+          <p>parcels scanned successfully</p>
+        </div>
       </header>
 
-      <main>
+      <main className={clsx('flex-1')}>
         <Outlet />
       </main>
 
-      <footer>
-        <button>Enter ID Manually</button>
-
-        <button>Done Scanning</button>
+      <footer className={clsx('bg-black p-5')}>
+        <div className="flex justify-center gap-5">
+          <button className={clsx(styles.button)}>Enter ID Manually</button>
+          <button className={clsx(styles.button)}>Done Scanning</button>
+        </div>
       </footer>
     </div>
   )

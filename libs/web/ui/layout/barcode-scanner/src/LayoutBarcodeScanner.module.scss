@@ -1,0 +1,5 @@
+.button {
+  @apply bg-white hover:bg-opacity-50;
+  @apply px-5 rounded-full;
+  @apply transition-all duration-300;
+}
