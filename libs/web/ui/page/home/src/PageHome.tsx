@@ -27,7 +27,7 @@ export function PageHome() {
       <ul className={clsx('flex gap-10')}>
         {demos.map(({ name, url }) => {
           return (
-            <li>
+            <li key={name}>
               <div className={clsx('border rounded-lg')}>
                 <div></div>
                 <Link className={clsx('py-2 px-5 block hover:bg-gray-100')} to={url || name}>

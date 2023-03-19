@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'
+import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
 
 export function ZxingJsScanner() {
+  const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
+
   const codeReader = useRef<BrowserMultiFormatReader>()
 
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>('')
-  const [result, setResult] = useState<string>()
-
   const [deviceIdsList, setDeviceIdsList] = useState<MediaDeviceInfo[]>([])
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function ZxingJsScanner() {
       })
 
     return () => {
-      // codeReader.current?.stopContinuousDecode()
+      resetReader()
     }
   }, [])
 
@@ -38,7 +39,6 @@ export function ZxingJsScanner() {
 
   function resetReader() {
     codeReader.current?.reset()
-    setResult(undefined)
   }
 
   function startScanning() {
@@ -49,12 +49,12 @@ export function ZxingJsScanner() {
     codeReader.current.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
       if (result) {
         console.log(result)
-        setResult(result.getText())
+        onBarcodeDetected(result.getText())
       }
 
       if (err && !(err instanceof NotFoundException)) {
         console.error(err)
-        setResult(err.message)
+        onError(err)
       }
     })
 
@@ -63,12 +63,8 @@ export function ZxingJsScanner() {
 
   return (
     <div>
-      <div>
-        <video id="video" className="w-full h-full"></video>
-      </div>
-
-      <div className="p-3">
-        <div id="sourceSelectPanel" className="text-center">
+      <div className="p-3 bg-stone-300">
+        <div className="text-center">
           <label htmlFor="sourceSelect">Change video source:</label>
           <select
             id="sourceSelect"
@@ -86,14 +82,18 @@ export function ZxingJsScanner() {
         </div>
 
         <div className="flex justify-center gap-5 mt-3">
-          <button className="button border" id="startButton" onClick={() => startScanning()}>
+          <button className="button border" onClick={() => startScanning()}>
             Start Scanning
           </button>
 
-          <button className="button border" id="resetButton" onClick={() => resetReader()}>
+          <button className="button border" onClick={() => resetReader()}>
             Reset
           </button>
         </div>
+      </div>
+
+      <div>
+        <video id="video" className="w-full"></video>
       </div>
     </div>
   )

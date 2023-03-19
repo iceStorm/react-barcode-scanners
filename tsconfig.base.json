@@ -18,6 +18,9 @@
       "@react-barcode-scanners/shared/data-access/models": [
         "libs/shared/data-access/models/src/index.ts"
       ],
+      "@react-barcode-scanners/web/data-access/context/barcode-scanner": [
+        "libs/web/data-access/context/barcode-scanner/src/index.ts"
+      ],
       "@react-barcode-scanners/web/shell/router": ["libs/web/shell/router/src/index.ts"],
       "@react-barcode-scanners/web/ui/layout/barcode-scanner": [
         "libs/web/ui/layout/barcode-scanner/src/index.ts"
