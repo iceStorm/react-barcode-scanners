@@ -36,9 +36,10 @@ export const scannerPages: BarcodeScannerLib[] = [
   },
   {
     path: '/scanner/web-api',
-    title: 'Standard Web API',
+    title: 'Web API Standard',
     sourceUrl: 'https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API',
-    liveDemoUrl: 'https://zxing-js.github.io/library',
+    liveDemoUrl:
+      'https://gist.githack.com/bellbind/e8a14f982122cc074ce85a0f19ea65e5/raw/index.html',
     element: <WebApiScanner />,
   },
 ]

@@ -46,7 +46,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
     <div className={clsx('rounded-lg border', 'p-5', 'w-full lg:max-w-md', 'bg-white')}>
       <h2 className="font-bold mb-5 text-xl">{title}</h2>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-5">
         <p className="text-xs">
           <span className="font-medium">Document: </span>
           <a
@@ -62,7 +62,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
         <p className="text-xs">
           <span className="font-medium">Library live demo: </span>
           <a
-            className="hover:underline text-blue-500 line-clamp-2"
+            className="hover:underline text-blue-500 text-ellipsis line-clamp-2"
             href={liveDemoUrl}
             target="_blank"
             rel="noreferrer"
@@ -77,7 +77,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
             <p className="font-bold mb-2">Github Metadata:</p>
 
             <div className={styles.grid_github_meta}>
-              <p className={clsx('bg-gray-50', 'border rounded-lg', 'p-3')}>
+              <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
                 <span className="flex items-center gap-2">
                   <CiStar size={20} className="text-yellow-500" />
                   <span>
@@ -86,7 +86,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
                 </span>
               </p>
 
-              <p className={clsx('bg-gray-50', 'border rounded-lg', 'p-3')}>
+              <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
                 <span className="flex items-center gap-2">
                   <VscIssues size={20} className="text-yellow-500" />
                   <span>
@@ -95,7 +95,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
                 </span>
               </p>
 
-              <p className={clsx('bg-gray-50', 'border rounded-lg', 'p-3')}>
+              <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
                 <span className="flex items-center gap-2">
                   <BiGitBranch size={17} className="text-yellow-500" />
                   <span>

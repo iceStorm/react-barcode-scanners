@@ -23,6 +23,7 @@
       "@react-barcode-scanners/shared/data-access/models": [
         "libs/shared/data-access/models/src/index.ts"
       ],
+      "@react-barcode-scanners/shared/util/canvas": ["libs/shared/util/canvas/src/index.ts"],
       "@react-barcode-scanners/web/data-access/context/barcode-scanner": [
         "libs/web/data-access/context/barcode-scanner/src/index.ts"
       ],
