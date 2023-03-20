@@ -19,12 +19,16 @@ const demos: ScannerLibrary[] = [
     url: 'scanner/rxing-wasm',
     name: 'rxing-wasm',
   },
+  {
+    url: 'scanner/scandit',
+    name: 'scandit',
+  },
 ]
 
 export function PageHome() {
   return (
     <div className="container py-10">
-      <ul className={clsx('flex gap-10')}>
+      <ul className={clsx('flex flex-wrap gap-5 md:gap-10')}>
         {demos.map(({ name, url }) => {
           return (
             <li key={name}>

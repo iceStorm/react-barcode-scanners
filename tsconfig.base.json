@@ -32,6 +32,7 @@
       "@react-barcode-scanners/web/ui/page/rxing-wasm": [
         "libs/web/ui/page/rxing-wasm/src/index.ts"
       ],
+      "@react-barcode-scanners/web/ui/page/scandit": ["libs/web/ui/page/scandit/src/index.ts"],
       "@react-barcode-scanners/web/ui/page/zxing-js": ["libs/web/ui/page/zxing-js/src/index.ts"]
     }
   },

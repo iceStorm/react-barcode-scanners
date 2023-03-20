@@ -21,6 +21,12 @@ export function ZxingJsScanner() {
     codeReader.current
       .listVideoInputDevices()
       .then((videoInputDevices) => {
+        console.log('videoInputDevices:', videoInputDevices)
+
+        if (!videoInputDevices || !videoInputDevices.length) {
+          return Promise.reject(new Error('No camera found'))
+        }
+
         setSelectedDeviceId(videoInputDevices[0].deviceId)
 
         if (videoInputDevices.length >= 1) {
@@ -29,6 +35,7 @@ export function ZxingJsScanner() {
       })
       .catch((err) => {
         console.error(err)
+        onError(err)
       })
 
     return () => {
