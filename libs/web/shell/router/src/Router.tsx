@@ -2,11 +2,8 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import { LayoutBarcodeScanner } from '@react-barcode-scanners/web/ui/layout/barcode-scanner'
 import { PageHome } from '@react-barcode-scanners/web/ui/page/home'
-
-import { ZxingJsScanner } from '@react-barcode-scanners/web/ui/page/zxing-js'
-import { RxingWasmScanner } from '@react-barcode-scanners/web/ui/page/rxing-wasm'
-import { Html5QrCodeScanner } from '@react-barcode-scanners/web/ui/page/html5-qrcode'
-import { ScanditScanner } from '@react-barcode-scanners/web/ui/page/scandit'
+import { scannerPages } from '@react-barcode-scanners/web/data-access/routes'
+import { ScannerList } from '@react-barcode-scanners/web/ui/component/scanner-list'
 
 export const appRouter = createBrowserRouter([
   {
@@ -18,21 +15,16 @@ export const appRouter = createBrowserRouter([
     element: <LayoutBarcodeScanner />,
     children: [
       {
-        path: 'zxing-js',
-        element: <ZxingJsScanner />,
+        path: '',
+        index: true,
+        element: (
+          <div className="p-10 max-w-lg mx-auto flex flex-col gap-5 justify-center">
+            <p className="font-semibold">No scanner selected. Please pick one to countinue.</p>
+            <ScannerList />
+          </div>
+        ),
       },
-      {
-        path: 'rxing-wasm',
-        element: <RxingWasmScanner />,
-      },
-      {
-        path: 'html5-qrcode',
-        element: <Html5QrCodeScanner />,
-      },
-      {
-        path: 'scandit',
-        element: <ScanditScanner />,
-      },
+      ...scannerPages,
     ],
   },
 ])

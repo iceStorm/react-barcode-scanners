@@ -1,0 +1,5 @@
+.grid_github_meta {
+  @apply grid gap-2;
+
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}

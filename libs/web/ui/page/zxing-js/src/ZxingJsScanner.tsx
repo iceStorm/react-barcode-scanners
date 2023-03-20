@@ -87,7 +87,7 @@ export function ZxingJsScanner() {
 
   return (
     <div className="relative">
-      <div className={clsx('p-3 bg-stone-300 border-b flex flex-col gap-3', 'sticky top-0')}>
+      <div className={clsx('p-3 bg-stone-300 border-b flex flex-col gap-3', 'sticky top-0 z-10')}>
         {!isScanning && !isStartingScanning && (
           <div className="text-center">
             <label htmlFor="sourceSelect">Change video source:</label>
