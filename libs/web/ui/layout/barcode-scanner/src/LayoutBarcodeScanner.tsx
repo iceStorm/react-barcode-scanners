@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import clsx from 'clsx'
@@ -18,7 +18,9 @@ export function LayoutBarcodeScanner() {
       </header>
 
       <main className={clsx('flex-1', 'overflow-auto')}>
-        <Outlet />
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </main>
 
       <footer className={clsx('bg-black p-5')}>

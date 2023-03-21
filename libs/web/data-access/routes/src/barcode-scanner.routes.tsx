@@ -1,9 +1,11 @@
-import { ZxingJsScanner } from '@react-barcode-scanners/web/ui/page/zxing-js'
-import { RxingWasmScanner } from '@react-barcode-scanners/web/ui/page/rxing-wasm'
-import { Html5QrCodeScanner } from '@react-barcode-scanners/web/ui/page/html5-qrcode'
-import { ScanditScanner } from '@react-barcode-scanners/web/ui/page/scandit'
-import { WebApiScanner } from '@react-barcode-scanners/web/ui/page/web-api'
 import { BarcodeScannerLib } from '@react-barcode-scanners/shared/data-access/models'
+import { lazy } from 'react'
+
+const ZxingJsScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/zxing-js'))
+const RxingWasmScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/rxing-wasm'))
+const Html5QrCodeScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/html5-qrcode'))
+const ScanditScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/scandit'))
+const WebApiScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/web-api'))
 
 export const scannerPages: BarcodeScannerLib[] = [
   {
@@ -30,7 +32,7 @@ export const scannerPages: BarcodeScannerLib[] = [
   {
     path: '/scanner/scandit',
     title: 'Scandit SDK',
-    sourceUrl: 'https://www.scandit.com/products/web-sdk',
+    sourceUrl: 'https://www.scandit.com/developers',
     liveDemoUrl: 'https://websdk.demos.scandit.com',
     element: <ScanditScanner />,
   },
