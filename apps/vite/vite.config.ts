@@ -1,7 +1,9 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite'
+
 import react from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
+import wasm from 'vite-plugin-wasm'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/vite',
@@ -21,6 +23,7 @@ export default defineConfig({
     viteTsConfigPaths({
       root: '../../',
     }),
+    wasm(),
   ],
 
   resolve: {
