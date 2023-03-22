@@ -9,6 +9,7 @@ import {
   Camera,
   FrameSourceState,
   DataCaptureView,
+  CameraPosition,
 } from 'scandit-web-datacapture-core'
 
 import {
@@ -70,13 +71,12 @@ export function ScanditScanner() {
       // )
 
       const cameraSettings = BarcodeCapture.recommendedCameraSettings
-      const camera = Camera.default
+      const camera = Camera.atPosition(CameraPosition.WorldFacing)
       if (camera) {
         await camera.applySettings(cameraSettings)
+        await contextRef.current.setFrameSource(camera)
+        await camera.switchToDesiredState(FrameSourceState.On)
       }
-
-      await contextRef.current.setFrameSource(camera)
-      await camera.switchToDesiredState(FrameSourceState.On)
     }
 
     if (!canvasRef.current) {
@@ -92,7 +92,7 @@ export function ScanditScanner() {
     }
 
     return () => {
-      barcodeCaptureRef.current?.setEnabled(false)
+      // barcodeCaptureRef.current?.setEnabled(false)
     }
   }, [])
 
@@ -122,7 +122,7 @@ export function ScanditScanner() {
       <div>
         {/* <canvas ref={canvasRef} /> */}
 
-        {initScanditProgress === -1 && <WebCam className='h-full' />}
+        {initScanditProgress === -1 && <WebCam className="h-full" />}
       </div>
     </>
   )
