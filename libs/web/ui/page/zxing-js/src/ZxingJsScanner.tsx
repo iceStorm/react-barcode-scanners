@@ -1,8 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 
-import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
 import clsx from 'clsx'
+
+import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'
+
+import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
 
 export function ZxingJsScanner() {
   const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
@@ -13,6 +15,8 @@ export function ZxingJsScanner() {
 
   const [selectedDeviceId, setSelectedDeviceId] = useState<string>('')
   const [deviceIdsList, setDeviceIdsList] = useState<MediaDeviceInfo[]>([])
+
+  const videoContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     codeReader.current = new BrowserMultiFormatReader()
@@ -85,6 +89,8 @@ export function ZxingJsScanner() {
     console.log(`Started continous decode from camera with id ${selectedDeviceId}`)
   }
 
+  console.log(videoContainerRef.current?.clientHeight)
+
   return (
     <div className="relative">
       <div className={clsx('p-3 bg-stone-300 border-b flex flex-col gap-3', 'sticky top-0 z-10')}>
@@ -126,8 +132,8 @@ export function ZxingJsScanner() {
         </div>
       </div>
 
-      <div>
-        <video id="video" className="w-full"></video>
+      <div ref={videoContainerRef} className="h-full">
+        <video id="video" className="w-full" style={{ maxHeight: '700px' }} />
       </div>
     </div>
   )

@@ -31,6 +31,9 @@
         "libs/web/data-access/routes/src/index.ts"
       ],
       "@react-barcode-scanners/web/shell/router": ["libs/web/shell/router/src/index.ts"],
+      "@react-barcode-scanners/web/ui/component/camera-picker": [
+        "libs/web/ui/component/camera-picker/src/index.ts"
+      ],
       "@react-barcode-scanners/web/ui/component/scanner-card": [
         "libs/web/ui/component/scanner-card/src/index.ts"
       ],
