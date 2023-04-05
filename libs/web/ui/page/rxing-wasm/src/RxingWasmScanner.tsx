@@ -9,7 +9,6 @@ import {
 } from 'rxing-wasm'
 
 import { CameraPicker } from '@react-barcode-scanners/web/ui/component/camera-picker'
-
 import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
 
 export function RxingWasmScanner() {
@@ -33,27 +32,50 @@ export function RxingWasmScanner() {
     const context = canvas.getContext('2d')
 
     if (!context) {
-      return undefined
+      throw new Error('No canvas context')
     }
 
-    const height = canvas.height
-    const width = canvas.width
+    const getCanvasSections = () => {
+      const sections = new Array<ImageData>()
 
-    function getCanvasSections() {
-      // 
+      const height = canvas.height
+      const width = canvas.width
+
+      // splitted sections from the image
+      const splittableSections = height > width ? 4 : 2
+      const singleSectionHeight = height / splittableSections
+
+      for (
+        let sectionIndex = 0, yCoordinate = 0;
+        sectionIndex < splittableSections;
+        sectionIndex++, yCoordinate += singleSectionHeight
+      ) {
+        sections.push(context.getImageData(0, yCoordinate, width, singleSectionHeight))
+      }
+
+      return sections
     }
 
-    const imageData = context.getImageData(0, 0, width, height)
+    const extractBarcodeFromImage = (imageData: ImageData) => {
+      const data = imageData.data
+      const luma8Data = convert_js_image_to_luma(new Uint8Array(data))
 
-    const data = imageData.data
-    const luma8Data = convert_js_image_to_luma(new Uint8Array(data))
+      const hints = new DecodeHintDictionary()
+      hints.set_hint(DecodeHintTypes.TryHarder, 'true')
 
-    const hints = new DecodeHintDictionary()
-    hints.set_hint(DecodeHintTypes.TryHarder, 'true')
-    hints.set_hint(DecodeHintTypes.TryHarder, 'true')
+      const parsedBarcode = decode_barcode_with_hints(
+        luma8Data,
+        imageData.width,
+        imageData.height,
+        hints
+      )
 
-    const parsedBarcode = decode_barcode_with_hints(luma8Data, width, height, hints)
-    return parsedBarcode
+      return parsedBarcode
+    }
+
+    // detected multiple barcodes from an image frame
+    const frameResults = getCanvasSections().map(extractBarcodeFromImage)
+    return frameResults
   }
 
   async function startScanning() {
@@ -70,12 +92,13 @@ export function RxingWasmScanner() {
           const frameCanvas = webcamRef.current.getCanvas()
 
           if (frameCanvas) {
-            const barcodeResult = decodeBarcode(frameCanvas)
-            console.log('barcodeResult:', barcodeResult?.text(), barcodeResult?.get_meta_data())
+            const barcodeResults = decodeBarcode(frameCanvas)
+            console.log(
+              'barcodeResults:',
+              barcodeResults?.map((res) => res.text())
+            )
 
-            if (barcodeResult?.text()) {
-              onBarcodeDetected(barcodeResult.text())
-            }
+            onBarcodeDetected(barcodeResults?.map((res) => res.text()))
           }
         } catch (error: any) {
           if (error !== 'not found') {

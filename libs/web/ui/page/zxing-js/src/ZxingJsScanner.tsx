@@ -133,7 +133,7 @@ export function ZxingJsScanner() {
       </div>
 
       <div ref={videoContainerRef} className="h-full">
-        <video id="video" className="w-full" style={{ maxHeight: '700px' }} />
+      <video id="video" className="w-full" style={{ maxHeight: '700px' }} />
       </div>
     </div>
   )

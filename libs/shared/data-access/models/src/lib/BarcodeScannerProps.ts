@@ -1,4 +1,4 @@
 export interface BarcodeScannerProps {
-  onBarcodeDetected: (barcode: string) => void
+  onBarcodeDetected: (barcodes: string[] | string) => void
   onError: (error: Error) => void
 }
