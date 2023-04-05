@@ -31,6 +31,7 @@
     "@nrwl/jest": "15.8.7",
     "@nrwl/js": "15.8.7",
     "@nrwl/linter": "15.8.7",
+    "@nrwl/next": "^15.9.2",
     "@nrwl/react": "^15.8.7",
     "@nrwl/rspack": "^0.158.5",
     "@nrwl/vite": "^15.8.7",

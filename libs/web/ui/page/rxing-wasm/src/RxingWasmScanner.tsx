@@ -38,6 +38,11 @@ export function RxingWasmScanner() {
 
     const height = canvas.height
     const width = canvas.width
+
+    function getCanvasSections() {
+      // 
+    }
+
     const imageData = context.getImageData(0, 0, width, height)
 
     const data = imageData.data
@@ -46,7 +51,6 @@ export function RxingWasmScanner() {
     const hints = new DecodeHintDictionary()
     hints.set_hint(DecodeHintTypes.TryHarder, 'true')
     hints.set_hint(DecodeHintTypes.TryHarder, 'true')
-    // hints.set_hint(DecodeHintTypes.PossibleFormats, 'code128')
 
     const parsedBarcode = decode_barcode_with_hints(luma8Data, width, height, hints)
     return parsedBarcode
