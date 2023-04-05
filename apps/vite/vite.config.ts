@@ -4,13 +4,14 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import wasm from 'vite-plugin-wasm'
+import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/vite',
 
   server: {
     port: 4200,
-    host: 'localhost',
+    host: true,
   },
 
   preview: {
@@ -24,6 +25,7 @@ export default defineConfig({
       root: '../../',
     }),
     wasm(),
+    // mkcert(),
   ],
 
   resolve: {

@@ -1,7 +1,12 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 
 import WebCam from 'react-webcam'
-import { convert_js_image_to_luma, decode_barcode } from 'rxing-wasm'
+import {
+  convert_js_image_to_luma,
+  DecodeHintDictionary,
+  DecodeHintTypes,
+  decode_barcode_with_hints,
+} from 'rxing-wasm'
 
 import { CameraPicker } from '@react-barcode-scanners/web/ui/component/camera-picker'
 
@@ -10,7 +15,7 @@ import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/c
 export function RxingWasmScanner() {
   const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
 
-  const detectionDelay = 1000
+  const detectionDelay = 50
   const [isScanning, setIsScanning] = useState(false)
 
   const webcamRef = useRef<WebCam>(null)
@@ -36,9 +41,14 @@ export function RxingWasmScanner() {
     const imageData = context.getImageData(0, 0, width, height)
 
     const data = imageData.data
-    const luma8Data = convert_js_image_to_luma(data)
-    const parsedBarcode = decode_barcode(luma8Data, width, height)
+    const luma8Data = convert_js_image_to_luma(new Uint8Array(data))
 
+    const hints = new DecodeHintDictionary()
+    hints.set_hint(DecodeHintTypes.TryHarder, 'true')
+    hints.set_hint(DecodeHintTypes.TryHarder, 'true')
+    // hints.set_hint(DecodeHintTypes.PossibleFormats, 'code128')
+
+    const parsedBarcode = decode_barcode_with_hints(luma8Data, width, height, hints)
     return parsedBarcode
   }
 
@@ -56,10 +66,11 @@ export function RxingWasmScanner() {
           const frameCanvas = webcamRef.current.getCanvas()
 
           if (frameCanvas) {
-            const barcodeResuls = decodeBarcode(frameCanvas)
+            const barcodeResult = decodeBarcode(frameCanvas)
+            console.log('barcodeResult:', barcodeResult?.text(), barcodeResult?.get_meta_data())
 
-            if (barcodeResuls?.text()) {
-              onBarcodeDetected(barcodeResuls.text())
+            if (barcodeResult?.text()) {
+              onBarcodeDetected(barcodeResult.text())
             }
           }
         } catch (error: any) {

@@ -57,18 +57,19 @@ export function ScanditScanner() {
         didScan(barcodeCapture, session, frameData) {
           const recognizedBarcodes = session.newlyRecognizedBarcodes
 
-          recognizedBarcodes.forEach((barcode) => {
-            onBarcodeDetected(barcode.data || '')
-          })
+          // recognizedBarcodes.forEach((barcode) => {
+          //   onBarcodeDetected(barcode.data || '')
+          // })
+          onBarcodeDetected(recognizedBarcodes.join('\n'))
         },
       })
 
-      // const view = await DataCaptureView.forContext(contextRef.current)
-      // view.connectToElement(canvasRef.current!)
-      // const overlay = await BarcodeCaptureOverlay.withBarcodeCaptureForView(
-      //   barcodeCaptureRef.current,
-      //   view
-      // )
+      const view = await DataCaptureView.forContext(contextRef.current)
+      view.connectToElement(canvasRef.current!)
+      const overlay = await BarcodeCaptureOverlay.withBarcodeCaptureForView(
+        barcodeCaptureRef.current,
+        view
+      )
 
       const cameraSettings = BarcodeCapture.recommendedCameraSettings
       const camera = Camera.atPosition(CameraPosition.WorldFacing)
@@ -120,9 +121,10 @@ export function ScanditScanner() {
       )}
 
       <div>
-        {/* <canvas ref={canvasRef} /> */}
+        <canvas ref={canvasRef} width={300} height={400} />
 
-        {initScanditProgress === -1 && <WebCam className="h-full" />}
+        {/* {initScanditProgress === -1 && <WebCam className="h-full" />} */}
+        {/* <WebCam autoPlay width={300} height={400} /> */}
       </div>
     </>
   )
