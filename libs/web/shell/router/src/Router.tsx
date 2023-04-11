@@ -4,6 +4,7 @@ import { LayoutBarcodeScanner } from '@react-barcode-scanners/web/ui/layout/barc
 import { PageHome } from '@react-barcode-scanners/web/ui/page/home'
 import { scannerPages } from '@react-barcode-scanners/web/data-access/routes'
 import { ScannerList } from '@react-barcode-scanners/web/ui/component/scanner-list'
+import { Suspense } from 'react'
 
 export const appRouter = createBrowserRouter([
   {
@@ -24,7 +25,12 @@ export const appRouter = createBrowserRouter([
           </div>
         ),
       },
-      ...scannerPages,
+      ...scannerPages.map((page) => {
+        return {
+          path: page.path,
+          element: <Suspense>{page.element}</Suspense>,
+        }
+      }),
     ],
   },
 ])

@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import clsx from 'clsx'
 import { BrowserMultiFormatReader } from '@zxing/library'
+
+import { notification } from 'antd'
 
 interface CameraPickerProps {
   onStartScanning: (cameraId: MediaDeviceInfo) => void
@@ -24,10 +26,15 @@ export function CameraPicker(props: CameraPickerProps) {
       .then((cameras) => {
         setCameraList(cameras)
 
-        if (cameras.length > 0) {
-          console.log('set first camera...')
-          setSelectedCamera(cameras[0])
+        if (cameras.length === 0) {
+          return notification.warning({
+            message: 'Warning',
+            description: 'No camera detected',
+          })
         }
+
+        console.log('set first camera...')
+        setSelectedCamera(cameras[0])
       })
       .finally(() => {
         setIsGettingCameras(false)
@@ -67,13 +74,13 @@ export function CameraPicker(props: CameraPickerProps) {
             onClick={() => selectedCamera && onStartScanning(selectedCamera)}
             disabled={isGettingCameras || !selectedCamera}
           >
-            {isGettingCameras ? 'Loading camera...' : 'Start Scanning'}
+            {isGettingCameras ? 'Loading camera...' : 'Start Camera'}
           </button>
         )}
 
         {!isGettingCameras && isScanning && (
           <button className="button border" onClick={() => onPauseScanning()}>
-            Pause Scanning
+            Pause Camera
           </button>
         )}
       </div>

@@ -34,6 +34,9 @@
       "@react-barcode-scanners/web/ui/component/camera-picker": [
         "libs/web/ui/component/camera-picker/src/index.ts"
       ],
+      "@react-barcode-scanners/web/ui/component/inspect-popup": [
+        "libs/web/ui/component/inspect-popup/src/index.ts"
+      ],
       "@react-barcode-scanners/web/ui/component/scanner-card": [
         "libs/web/ui/component/scanner-card/src/index.ts"
       ],
