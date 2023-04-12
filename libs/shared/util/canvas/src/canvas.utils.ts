@@ -6,7 +6,7 @@ export function getImageFromCanvas(canvas: HTMLCanvasElement | null) {
   return undefined
 }
 
-export function getCanvasSections(canvas?: HTMLCanvasElement) {
+export function getCanvasSections(canvas?: HTMLCanvasElement, includeOriginal = true) {
   const context = canvas?.getContext('2d')
   if (!canvas || !context) {
     throw new Error('No canvas context')
@@ -28,5 +28,24 @@ export function getCanvasSections(canvas?: HTMLCanvasElement) {
     sections.push(context.getImageData(0, yCoordinate, width, singleSectionHeight))
   }
 
+  if (includeOriginal) {
+    sections.push(context.getImageData(0, 0, width, height))
+  }
+
   return sections
+}
+
+export function imagedataToImage(imageData: ImageData) {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+
+  if (!ctx) {
+    throw new Error('No canvas context provided')
+  }
+
+  canvas.width = imageData.width
+  canvas.height = imageData.height
+  ctx.putImageData(imageData, 0, 0)
+
+  return canvas.toDataURL()
 }

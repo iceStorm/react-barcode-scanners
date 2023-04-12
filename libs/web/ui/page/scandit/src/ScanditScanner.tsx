@@ -1,6 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Progress } from 'antd'
-import WebCam from 'react-webcam'
 
 import {
   configure,
@@ -19,11 +18,10 @@ import {
   BarcodeCaptureSettings,
   BarcodeCaptureOverlay,
 } from 'scandit-web-datacapture-barcode'
-
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
+import { useBarcodeScannerStore } from '@react-barcode-scanners/web/data-access/store'
 
 export function ScanditScanner() {
-  const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
+  const { onBarcodesDetected$, onError$ } = useBarcodeScannerStore()
 
   const [initScanditProgress, setInitScanditProgress] = useState(0)
 
@@ -60,7 +58,7 @@ export function ScanditScanner() {
           // recognizedBarcodes.forEach((barcode) => {
           //   onBarcodeDetected(barcode.data || '')
           // })
-          onBarcodeDetected(recognizedBarcodes.join('\n'))
+          onBarcodesDetected$.next(recognizedBarcodes.map((barcode) => barcode.data || ''))
         },
       })
 
@@ -85,10 +83,10 @@ export function ScanditScanner() {
 
       initScanditSdk()
         .then(() => {
-          onBarcodeDetected('Scandit SDK initialized')
+          onBarcodesDetected$.next(['Scandit SDK initialized'])
         })
         .catch((error) => {
-          onError(error)
+          onError$.next(error)
         })
     }
 

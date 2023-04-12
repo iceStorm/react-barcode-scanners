@@ -1,19 +1,18 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Html5QrcodeScanner, Html5QrcodeScannerState } from 'html5-qrcode'
 import { Html5QrcodeError, Html5QrcodeResult, Html5QrcodeScanType } from 'html5-qrcode/esm/core'
-
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
+import { useBarcodeScannerStore } from '@react-barcode-scanners/web/data-access/store'
 
 export function Html5QrCodeScanner() {
-  const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
+  const { onBarcodesDetected$ } = useBarcodeScannerStore()
   const scannerRef = useRef<Html5QrcodeScanner>()
 
   function onScanSuccess(decodedText: string, decodedResult: Html5QrcodeResult) {
     // handle the scanned code as you like, for example:
     console.log(`Code matched = ${decodedText}`, decodedResult)
 
-    onBarcodeDetected(decodedText)
+    onBarcodesDetected$.next([decodedText])
   }
 
   function onScanFailure(errorMessage: string, error: Html5QrcodeError) {

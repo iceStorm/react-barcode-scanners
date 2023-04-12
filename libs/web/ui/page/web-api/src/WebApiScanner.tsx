@@ -1,16 +1,16 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 import WebCam from 'react-webcam'
 import { BrowserMultiFormatReader } from '@zxing/library'
 
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
 import { getImageFromCanvas } from '@react-barcode-scanners/shared/util/canvas'
+import { useBarcodeScannerStore } from '@react-barcode-scanners/web/data-access/store'
 
 export function WebApiScanner() {
   const imageCaptureInterval = 2000
 
-  const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
+  const { onBarcodesDetected$, onError$ } = useBarcodeScannerStore()
 
   const [isScanning, setIsScanning] = useState(false)
   const [isGettingCameras, setIsGettingCameras] = useState(false)
@@ -37,7 +37,7 @@ export function WebApiScanner() {
         }
       })
       .catch((error) => {
-        onError(error)
+        onError$.next(error)
       })
       .finally(() => {
         setTimeout(() => {
@@ -64,7 +64,7 @@ export function WebApiScanner() {
 
     // check compatibility
     if (!detectorRef.current) {
-      return onError(new Error('Barcode Detector is not supported by this browser.'))
+      return onError$.next(new Error('Barcode Detector is not supported by this browser.'))
     }
 
     console.log('Barcode Detector supported!')
@@ -101,12 +101,12 @@ export function WebApiScanner() {
               console.log(barcodes)
 
               barcodes.forEach((barcode) => {
-                onBarcodeDetected(barcode.rawValue)
+                onBarcodesDetected$.next([barcode.rawValue])
               })
             })
             .catch((error) => {
               console.error(error)
-              onError(error)
+              onError$.next(error)
             })
         }
       }

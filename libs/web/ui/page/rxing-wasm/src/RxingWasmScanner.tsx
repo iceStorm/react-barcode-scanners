@@ -1,8 +1,7 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { notification } from 'antd'
 import WebCam from 'react-webcam'
-import { AnimatePresence, motion } from 'framer-motion'
 import { filter } from 'rxjs'
 
 import {
@@ -12,17 +11,18 @@ import {
   decode_barcode_with_hints,
 } from 'rxing-wasm'
 
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
 import { CameraPicker } from '@react-barcode-scanners/web/ui/component/camera-picker'
-import { InspectPopup } from '@react-barcode-scanners/web/ui/component/inspect-popup'
+import {
+  useBarcodeScannerStore,
+  useBottomSheetStore,
+} from '@react-barcode-scanners/web/data-access/store'
 
 export function RxingWasmScanner() {
-  const { onBarcodeDetected, onError, onCapture$ } = useContext(ContextBarcodeScanner)
+  const { onBarcodesDetected$, onCapture$, onError$ } = useBarcodeScannerStore()
+  const { display } = useBottomSheetStore()
 
   const detectionDelay = 50
   const [isScanning, setIsScanning] = useState(false)
-  const [isShowingPopup, setIsShowingPopup] = useState(false)
-  const [capturedCanvas, setCapturedCanvas] = useState<HTMLCanvasElement>()
 
   const webcamRef = useRef<WebCam>(null)
   const detectInterval = useRef<NodeJS.Timer>()
@@ -51,7 +51,7 @@ export function RxingWasmScanner() {
       hints
     )
 
-    return parsedBarcode
+    return parsedBarcode.text()
   }, [])
 
   // async function startAutoScanning() {
@@ -107,13 +107,12 @@ export function RxingWasmScanner() {
           throw new Error('No canvas context')
         }
 
-        setCapturedCanvas(canvas)
-        setIsShowingPopup(true)
+        display(canvas, extractBarcodeFromImage)
       }
     } catch (error: any) {
       if (error !== 'not found') {
         console.error('Error when detecting barcodes:', error)
-        onError(error.message ? error : new Error(error))
+        onError$.next(error.message ? error : new Error(error))
       }
     }
   }
@@ -127,27 +126,6 @@ export function RxingWasmScanner() {
       />
 
       {isScanning && <WebCam ref={webcamRef} videoConstraints={{ facingMode: 'environment' }} />}
-
-      <AnimatePresence>
-        {isShowingPopup && (
-          <motion.div
-            className="fixed bottom-0 left-0 right-0 z-50"
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            initial={{ bottom: '-100%' }}
-            animate={{ bottom: 0 }}
-            exit={{ bottom: '-100%' }}
-          >
-            <InspectPopup
-              detectionCallback={extractBarcodeFromImage}
-              canvas={capturedCanvas}
-              onClose={() => {
-                setCapturedCanvas(undefined)
-                setIsShowingPopup(false)
-              }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }

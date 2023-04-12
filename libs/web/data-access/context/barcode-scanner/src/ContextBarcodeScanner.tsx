@@ -1,24 +1,34 @@
-import { createContext, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { throttle } from 'lodash'
 import { message, notification } from 'antd'
 
-import { BarcodeScannerProps } from '@react-barcode-scanners/shared/data-access/models'
-import { BehaviorSubject } from 'rxjs'
-
-export const ContextBarcodeScanner = createContext<BarcodeScannerProps>({
-  onBarcodeDetected: () => {
-    //
-  },
-  onError(error) {
-    //
-  },
-  onCapture$: new BehaviorSubject<unknown>(null),
-})
+import { useBarcodeScannerStore } from '@react-barcode-scanners/web/data-access/store'
+import { filter } from 'rxjs'
 
 export function ContextBarcodeScannerProvider(props: { children: JSX.Element }) {
   const throttleDuration = 1000
-  const onCaptureObservable = new BehaviorSubject<unknown>(null)
+
+  const { onBarcodesDetected$, onError$ } = useBarcodeScannerStore()
+
+  useEffect(() => {
+    const barcodeDetectSubscription = onBarcodesDetected$
+      .pipe(filter((value) => Boolean(value.length)))
+      .subscribe((barcodes) => {
+        onBarcodeDetected(barcodes)
+      })
+
+    const errorSubscription = onError$
+      .pipe(filter((value) => Boolean(value.message)))
+      .subscribe((error) => {
+        onError(error)
+      })
+
+    return () => {
+      barcodeDetectSubscription.unsubscribe()
+      errorSubscription.unsubscribe()
+    }
+  }, [])
 
   const onBarcodeDetected = useMemo(() => {
     return throttle((barcodes: string[] | string) => {
@@ -38,11 +48,5 @@ export function ContextBarcodeScannerProvider(props: { children: JSX.Element }) 
     message.error(error.message)
   }
 
-  return (
-    <ContextBarcodeScanner.Provider
-      value={{ onBarcodeDetected, onError, onCapture$: onCaptureObservable }}
-    >
-      {props.children}
-    </ContextBarcodeScanner.Provider>
-  )
+  return <div>{props.children}</div>
 }

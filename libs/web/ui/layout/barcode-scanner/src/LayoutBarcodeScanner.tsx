@@ -1,16 +1,22 @@
-import { Suspense, useContext, useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import { Outlet } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import clsx from 'clsx'
 
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
+import { InspectPopup } from '@react-barcode-scanners/web/ui/component/inspect-popup'
+import {
+  useBarcodeScannerStore,
+  useBottomSheetStore,
+} from '@react-barcode-scanners/web/data-access/store'
 
 import styles from './LayoutBarcodeScanner.module.scss'
 
 export function LayoutBarcodeScanner() {
   const [scannedParcels, setScannedParcels] = useState(0)
 
-  const { onCapture$: onCapture } = useContext(ContextBarcodeScanner)
+  const { onCapture$ } = useBarcodeScannerStore()
+  const { visible: bottomSheetVisible, dispose } = useBottomSheetStore()
 
   return (
     <div
@@ -36,11 +42,39 @@ export function LayoutBarcodeScanner() {
         <div className="flex justify-center gap-5">
           {/* <button className={clsx(styles.button)}>Enter ID Manually</button>
           <button className={clsx(styles.button)}>Done Scanning</button> */}
-          <button className={clsx(styles.button)} onClick={() => onCapture.next('pseudo')}>
+          <button className={clsx(styles.button)} onClick={() => onCapture$.next('pseudo')}>
             Capture
           </button>
         </div>
       </footer>
+
+      <AnimatePresence>
+        {bottomSheetVisible && (
+          <div className="fixed top-0 right-0 bottom-0 left-0 z-50">
+            <motion.div
+              className={clsx('w-full h-full z-40', 'bg-black bg-opacity-50')}
+              onClick={() => dispose()}
+              transition={{ duration: 0.5 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 z-50 max-h-full overflow-auto"
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              initial={{ bottom: '-100%' }}
+              animate={{ bottom: 0 }}
+              exit={{ bottom: '-100%' }}
+            >
+              <InspectPopup
+                onClose={() => {
+                  dispose()
+                }}
+              />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

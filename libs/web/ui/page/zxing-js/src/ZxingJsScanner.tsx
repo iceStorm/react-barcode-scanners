@@ -1,13 +1,12 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import clsx from 'clsx'
 
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library'
-
-import { ContextBarcodeScanner } from '@react-barcode-scanners/web/data-access/context/barcode-scanner'
+import { useBarcodeScannerStore } from '@react-barcode-scanners/web/data-access/store'
 
 export function ZxingJsScanner() {
-  const { onBarcodeDetected, onError } = useContext(ContextBarcodeScanner)
+  const { onBarcodesDetected$, onError$ } = useBarcodeScannerStore()
 
   const codeReader = useRef<BrowserMultiFormatReader>()
   const [isScanning, setIsScanning] = useState(false)
@@ -39,7 +38,7 @@ export function ZxingJsScanner() {
       })
       .catch((err) => {
         console.error(err)
-        onError(err)
+        onError$.next(err)
       })
 
     return () => {
@@ -67,19 +66,19 @@ export function ZxingJsScanner() {
       .decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
         if (result) {
           console.log(result)
-          onBarcodeDetected(result.getText())
+          onBarcodesDetected$.next([result.getText()])
         }
 
         if (err && !(err instanceof NotFoundException)) {
           console.error(err)
-          onError(err)
+          onError$.next(err)
         }
       })
       .then(() => {
         setIsScanning(true)
       })
       .catch((error) => {
-        onError(error)
+        onError$.next(error)
         setIsScanning(false)
       })
       .finally(() => {
@@ -133,7 +132,7 @@ export function ZxingJsScanner() {
       </div>
 
       <div ref={videoContainerRef} className="h-full">
-      <video id="video" className="w-full" style={{ maxHeight: '700px' }} />
+        <video id="video" className="w-full" style={{ maxHeight: '700px' }} />
       </div>
     </div>
   )
