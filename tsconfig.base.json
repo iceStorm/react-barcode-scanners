@@ -59,6 +59,7 @@
       ],
       "@react-barcode-scanners/web/ui/page/scandit": ["libs/web/ui/page/scandit/src/index.ts"],
       "@react-barcode-scanners/web/ui/page/web-api": ["libs/web/ui/page/web-api/src/index.ts"],
+      "@react-barcode-scanners/web/ui/page/zbar-wasm": ["libs/web/ui/page/zbar-wasm/src/index.ts"],
       "@react-barcode-scanners/web/ui/page/zxing-js": ["libs/web/ui/page/zxing-js/src/index.ts"]
     }
   },

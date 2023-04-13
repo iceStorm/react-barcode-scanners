@@ -3315,6 +3315,11 @@
     "@typescript-eslint/types" "5.55.0"
     eslint-visitor-keys "^3.3.0"
 
+"@undecaf/zbar-wasm@^0.9.12":
+  version "0.9.12"
+  resolved "https://registry.yarnpkg.com/@undecaf/zbar-wasm/-/zbar-wasm-0.9.12.tgz#158ebf73d6a82112e0eea749a54f77b3857304c7"
+  integrity sha512-r580a4yNDEJFCayS+t4ibDjPNVLI60zo5045XuUgVQAbAzOfyAlEiwvr1PjYehOrS97rHoPk5hcMNP2n2WUu/w==
+
 "@vitejs/plugin-react@^3.0.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-3.1.0.tgz#d1091f535eab8b83d6e74034d01e27d73c773240"

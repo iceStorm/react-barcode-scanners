@@ -1,4 +1,5 @@
 import { BarcodeScannerLib } from '@react-barcode-scanners/shared/data-access/models'
+import { ZBarWasmScanner } from '@react-barcode-scanners/web/ui/page/zbar-wasm'
 import { lazy } from 'react'
 
 const ZxingJsScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/zxing-js'))
@@ -21,6 +22,13 @@ export const scannerPages: BarcodeScannerLib[] = [
     sourceUrl: 'https://github.com/rxing-core/rxing-wasm',
     liveDemoUrl: 'https://rxing-wasm.vercel.app',
     element: <RxingWasmScanner />,
+  },
+  {
+    path: '/scanner/zbar-wasm',
+    title: 'zbar-wasm',
+    sourceUrl: 'https://github.com/undecaf/zbar-wasm',
+    liveDemoUrl: '#',
+    element: <ZBarWasmScanner />,
   },
   {
     path: '/scanner/html5-qrcode',
