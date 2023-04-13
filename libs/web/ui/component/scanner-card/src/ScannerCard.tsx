@@ -43,71 +43,82 @@ export function ScannerCard(props: BarcodeScannerLib) {
   }, [])
 
   return (
-    <div className={clsx('rounded-lg border', 'p-5', 'w-full lg:max-w-md', 'bg-white')}>
-      <h2 className="font-bold mb-5 text-xl">{title}</h2>
+    <div
+      className={clsx(
+        'rounded-lg border',
+        'w-full lg:max-w-md h-full p-5',
+        'bg-white',
+        'flex flex-col justify-between'
+      )}
+    >
+      <div>
+        <h2 className="font-bold mb-5 text-xl">{title}</h2>
 
-      <div className="flex flex-col gap-5">
-        <p className="text-xs">
-          <span className="font-medium">Document: </span>
-          <a
-            className="hover:underline text-blue-500 line-clamp-1"
-            href={sourceUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {sourceUrl}
-          </a>
-        </p>
+        <div className="flex flex-col gap-5">
+          <p className="text-xs">
+            <span className="font-medium">Document: </span>
+            <a
+              className="hover:underline text-blue-500 line-clamp-3"
+              href={sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {sourceUrl}
+            </a>
+          </p>
 
-        <p className="text-xs">
-          <span className="font-medium">Library live demo: </span>
-          <a
-            className="hover:underline text-blue-500 text-ellipsis line-clamp-1"
-            href={liveDemoUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {liveDemoUrl}
-          </a>
-        </p>
+          <p className="text-xs">
+            <span className="font-medium">Library live demo: </span>
+            <a
+              className="hover:underline text-blue-500 text-ellipsis line-clamp-3"
+              href={liveDemoUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {liveDemoUrl}
+            </a>
+          </p>
 
-        {/* github meta info */}
-        {githubRepoData && (
-          <section className="text-xs mt-5">
-            <p className="font-bold mb-2">Github Metadata:</p>
+          {/* github meta info */}
+          {githubRepoData && (
+            <section className="text-xs mt-5">
+              <p className="font-bold mb-2">Github Metadata:</p>
 
-            <div className={styles.grid_github_meta}>
-              <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
-                <span className="flex items-center gap-2">
-                  <CiStar size={20} className="text-yellow-500" />
-                  <span>
-                    Stars: <span>{githubRepoData.data.stargazers_count}</span>
+              <div className={styles.grid_github_meta}>
+                <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
+                  <span className="flex items-center gap-2">
+                    <CiStar size={20} className="text-yellow-500" />
+                    <span>
+                      Stars: <span>{githubRepoData.data.stargazers_count}</span>
+                    </span>
                   </span>
-                </span>
-              </p>
+                </p>
 
-              <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
-                <span className="flex items-center gap-2">
-                  <VscIssues size={20} className="text-yellow-500" />
-                  <span>
-                    Open Issues: <span>{githubRepoData.data.open_issues_count}</span>
+                <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
+                  <span className="flex items-center gap-2">
+                    <VscIssues size={20} className="text-yellow-500" />
+                    <span>
+                      Open Issues: <span>{githubRepoData.data.open_issues_count}</span>
+                    </span>
                   </span>
-                </span>
-              </p>
+                </p>
 
-              <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
-                <span className="flex items-center gap-2">
-                  <BiGitBranch size={17} className="text-yellow-500" />
-                  <span>
-                    Last push: <span>{repoLastActivity}</span>
+                <p className={clsx('bg-gray-50 bg-opacity-50', 'border rounded-lg', 'p-3')}>
+                  <span className="flex items-center gap-2">
+                    <BiGitBranch size={17} className="text-yellow-500" />
+                    <span>
+                      Last push: <span>{repoLastActivity}</span>
+                    </span>
                   </span>
-                </span>
-              </p>
-            </div>
-          </section>
-        )}
+                </p>
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
 
-        <section className="-mb-5 mt-5">
+      <div className="mt-10">
+        <section className="mb-3">
           <p className="text-xs font-bold">
             <span className="">Development Status: </span>
             <span
@@ -120,21 +131,21 @@ export function ScannerCard(props: BarcodeScannerLib) {
             </span>
           </p>
         </section>
-      </div>
 
-      <Link
-        to={path || '#'}
-        className={clsx(
-          'text-xs',
-          'mt-10 p-2 px-5',
-          'border rounded-md',
-          'hover:bg-gray-100',
-          'flex items-center justify-center gap-3'
-        )}
-      >
-        <BsUpcScan size={15} className="text-black" />
-        <span>View Implementation</span>
-      </Link>
+        <Link
+          to={path || '#'}
+          className={clsx(
+            'text-xs',
+            'p-2 px-5',
+            'border rounded-md',
+            'hover:bg-gray-100',
+            'flex items-center justify-center gap-3'
+          )}
+        >
+          <BsUpcScan size={15} className="text-black" />
+          <span>View Implementation</span>
+        </Link>
+      </div>
     </div>
   )
 }

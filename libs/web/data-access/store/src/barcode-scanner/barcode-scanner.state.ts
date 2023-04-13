@@ -13,9 +13,9 @@ export interface BarcodeScannerBottomSheetState {
   detectionCallback?: (imageData: ImageData) => any
 
   active(): void
-  hide(): void
   dispose(): void
 
+  hide(): void
   display(
     canvas: BarcodeScannerBottomSheetState['canvas'],
     detectionCallback: BarcodeScannerBottomSheetState['detectionCallback']
