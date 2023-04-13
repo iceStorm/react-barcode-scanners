@@ -12,14 +12,14 @@ export const scannerPages: BarcodeScannerLib[] = [
     path: '/scanner/zxing-js',
     title: 'zxing-js',
     sourceUrl: 'https://github.com/zxing-js/library',
-    liveDemoUrl: 'https://zxing-js.github.io/library',
+    liveDemoUrl: 'https://zxing-js.github.io/library/examples/multi-camera/',
     element: <ZxingJsScanner />,
   },
   {
     path: '/scanner/rxing-wasm',
     title: 'rxing-wasm',
     sourceUrl: 'https://github.com/rxing-core/rxing-wasm',
-    liveDemoUrl: 'https://zxing-js.github.io/library',
+    liveDemoUrl: 'https://rxing-wasm.vercel.app',
     element: <RxingWasmScanner />,
   },
   {
