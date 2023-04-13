@@ -10,6 +10,12 @@ export const useBarcodeScannerStore = create<BarcodeScannerState>()((set) => ({
 }))
 
 export const useBottomSheetStore = create<BarcodeScannerBottomSheetState>()((set) => ({
+  active() {
+    set((state) => ({
+      use: true,
+    }))
+  },
+
   display(canvas, detectionCallback) {
     set((state) => ({
       visible: true,
@@ -18,8 +24,16 @@ export const useBottomSheetStore = create<BarcodeScannerBottomSheetState>()((set
     }))
   },
 
+  hide() {
+    set((state) => ({
+      visible: false,
+      canvas: undefined,
+    }))
+  },
+
   dispose() {
     set((state) => ({
+      use: false,
       visible: false,
       canvas: undefined,
     }))

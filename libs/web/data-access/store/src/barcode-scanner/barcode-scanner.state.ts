@@ -7,10 +7,13 @@ export interface BarcodeScannerState {
 }
 
 export interface BarcodeScannerBottomSheetState {
+  use?: boolean
   visible?: boolean
   canvas?: HTMLCanvasElement
   detectionCallback?: (imageData: ImageData) => any
 
+  active(): void
+  hide(): void
   dispose(): void
 
   display(

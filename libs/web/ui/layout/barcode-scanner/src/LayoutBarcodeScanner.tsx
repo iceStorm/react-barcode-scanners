@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react'
 
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import clsx from 'clsx'
 
@@ -16,7 +16,7 @@ export function LayoutBarcodeScanner() {
   const [scannedParcels, setScannedParcels] = useState(0)
 
   const { onCapture$ } = useBarcodeScannerStore()
-  const { visible: bottomSheetVisible, dispose } = useBottomSheetStore()
+  const { use: useBottomSheet, visible: bottomSheetVisible, hide: dispose } = useBottomSheetStore()
 
   return (
     <div
@@ -40,11 +40,16 @@ export function LayoutBarcodeScanner() {
 
       <footer className={clsx('bg-black p-5')}>
         <div className="flex justify-center gap-5">
-          {/* <button className={clsx(styles.button)}>Enter ID Manually</button>
-          <button className={clsx(styles.button)}>Done Scanning</button> */}
-          <button className={clsx(styles.button)} onClick={() => onCapture$.next('pseudo')}>
-            Capture
-          </button>
+          <Link to={'/'} className={clsx(styles.button)}>
+            Home
+          </Link>
+          {/* <button className={clsx(styles.button)}>Done Scanning</button> */}
+
+          {useBottomSheet && (
+            <button className={clsx(styles.button)} onClick={() => onCapture$.next('pseudo')}>
+              Capture
+            </button>
+          )}
         </div>
       </footer>
 

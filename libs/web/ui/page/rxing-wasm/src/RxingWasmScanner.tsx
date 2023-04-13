@@ -19,7 +19,7 @@ import {
 
 export function RxingWasmScanner() {
   const { onBarcodesDetected$, onCapture$, onError$ } = useBarcodeScannerStore()
-  const { display } = useBottomSheetStore()
+  const { display, active: activeBottomSheet, dispose: disposeBottomSheet } = useBottomSheetStore()
 
   const detectionDelay = 50
   const [isScanning, setIsScanning] = useState(false)
@@ -28,12 +28,15 @@ export function RxingWasmScanner() {
   const detectInterval = useRef<NodeJS.Timer>()
 
   useEffect(() => {
+    activeBottomSheet()
+
     onCapture$.pipe(filter((value) => Boolean(value))).subscribe(() => {
       captureSingleImageFrame()
     })
 
     return () => {
       setIsScanning(false)
+      disposeBottomSheet()
     }
   }, [])
 
