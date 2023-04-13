@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import wasm from 'vite-plugin-wasm'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/vite',
@@ -11,6 +12,7 @@ export default defineConfig({
   server: {
     port: 7501,
     host: true,
+    https: true,
   },
 
   preview: {
@@ -24,6 +26,7 @@ export default defineConfig({
       root: '../../',
     }),
     wasm(),
+    basicSsl(),
   ],
 
   resolve: {

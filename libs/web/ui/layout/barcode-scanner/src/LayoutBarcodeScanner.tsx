@@ -19,12 +19,7 @@ export function LayoutBarcodeScanner() {
   const { use: useBottomSheet, visible: bottomSheetVisible, hide: dispose } = useBottomSheetStore()
 
   return (
-    <div
-      className={clsx(
-        'fixed left-0 right-0 top-0 bottom-0',
-        'flex flex-col h-screen overflow-auto'
-      )}
-    >
+    <div className={clsx('fixed left-0 right-0 top-0 bottom-0', 'flex flex-col overflow-auto')}>
       <header className={clsx('bg-black text-white p-5')}>
         <div className="text-center">
           <h1 className="text-6xl font-bold mb-3">{scannedParcels}</h1>
@@ -43,8 +38,6 @@ export function LayoutBarcodeScanner() {
           <Link to={'/'} className={clsx(styles.button)}>
             Home
           </Link>
-          {/* <button className={clsx(styles.button)}>Done Scanning</button> */}
-
           {useBottomSheet && (
             <button className={clsx(styles.button)} onClick={() => onCapture$.next('pseudo')}>
               Capture
