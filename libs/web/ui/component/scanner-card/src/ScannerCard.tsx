@@ -17,7 +17,7 @@ import { getRepoInformation } from './api/github.apis'
 import styles from './ScannerCard.module.scss'
 
 export function ScannerCard(props: BarcodeScannerLib) {
-  const { path, title, liveDemoUrl, sourceUrl } = props
+  const { path, title, liveDemoUrl, sourceUrl, devStatus } = props
 
   const {
     data: githubRepoData,
@@ -50,7 +50,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
         <p className="text-xs">
           <span className="font-medium">Document: </span>
           <a
-            className="hover:underline text-blue-500 line-clamp-2"
+            className="hover:underline text-blue-500 line-clamp-1"
             href={sourceUrl}
             target="_blank"
             rel="noreferrer"
@@ -62,7 +62,7 @@ export function ScannerCard(props: BarcodeScannerLib) {
         <p className="text-xs">
           <span className="font-medium">Library live demo: </span>
           <a
-            className="hover:underline text-blue-500 text-ellipsis line-clamp-2"
+            className="hover:underline text-blue-500 text-ellipsis line-clamp-1"
             href={liveDemoUrl}
             target="_blank"
             rel="noreferrer"
@@ -106,6 +106,20 @@ export function ScannerCard(props: BarcodeScannerLib) {
             </div>
           </section>
         )}
+
+        <section className="-mb-5 mt-5">
+          <p className="text-xs font-bold">
+            <span className="">Development Status: </span>
+            <span
+              className={clsx({
+                'text-green-600': devStatus === 'Done',
+                'text-red-500': devStatus === 'Developing',
+              })}
+            >
+              {devStatus}
+            </span>
+          </p>
+        </section>
       </div>
 
       <Link

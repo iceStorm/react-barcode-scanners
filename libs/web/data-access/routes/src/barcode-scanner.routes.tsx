@@ -10,39 +10,12 @@ const WebApiScanner = lazy(() => import('@react-barcode-scanners/web/ui/page/web
 
 export const scannerPages: BarcodeScannerLib[] = [
   {
-    path: '/scanner/zxing-js',
-    title: 'zxing-js',
-    sourceUrl: 'https://github.com/zxing-js/library',
-    liveDemoUrl: 'https://zxing-js.github.io/library/examples/multi-camera/',
-    element: <ZxingJsScanner />,
-  },
-  {
-    path: '/scanner/rxing-wasm',
-    title: 'rxing-wasm',
-    sourceUrl: 'https://github.com/rxing-core/rxing-wasm',
-    liveDemoUrl: 'https://rxing-wasm.vercel.app',
-    element: <RxingWasmScanner />,
-  },
-  {
-    path: '/scanner/zbar-wasm',
-    title: 'zbar-wasm',
-    sourceUrl: 'https://github.com/undecaf/zbar-wasm',
-    liveDemoUrl: '#',
-    element: <ZBarWasmScanner />,
-  },
-  {
     path: '/scanner/html5-qrcode',
     title: 'html5-qrcode',
     sourceUrl: 'https://github.com/mebjas/html5-qrcode',
     liveDemoUrl: 'https://scanapp.org',
     element: <Html5QrCodeScanner />,
-  },
-  {
-    path: '/scanner/scandit',
-    title: 'Scandit SDK',
-    sourceUrl: 'https://www.scandit.com/developers',
-    liveDemoUrl: 'https://websdk.demos.scandit.com',
-    element: <ScanditScanner />,
+    devStatus: 'Done',
   },
   {
     path: '/scanner/web-api',
@@ -51,5 +24,47 @@ export const scannerPages: BarcodeScannerLib[] = [
     liveDemoUrl:
       'https://gist.githack.com/bellbind/e8a14f982122cc074ce85a0f19ea65e5/raw/index.html',
     element: <WebApiScanner />,
+    devStatus: 'Done',
+  },
+  {
+    path: '/scanner/scandit',
+    title: 'Scandit SDK',
+    sourceUrl: 'https://www.scandit.com/developers',
+    liveDemoUrl: 'https://websdk.demos.scandit.com',
+    element: <ScanditScanner />,
+    devStatus: 'Done',
+  },
+  {
+    path: '/scanner/zxing-js',
+    title: 'zxing-js',
+    sourceUrl: 'https://github.com/zxing-js/library',
+    liveDemoUrl: 'https://zxing-js.github.io/library/examples/multi-camera/',
+    element: <ZxingJsScanner />,
+    devStatus: 'Done',
+  },
+  {
+    path: '/scanner/rxing-wasm',
+    title: 'rxing-wasm',
+    sourceUrl: 'https://github.com/rxing-core/rxing-wasm',
+    liveDemoUrl: 'https://rxing-wasm.vercel.app',
+    element: <RxingWasmScanner />,
+    devStatus: 'Done',
+  },
+  {
+    path: '/scanner/zbar-wasm',
+    title: 'zbar-wasm',
+    sourceUrl: 'https://github.com/undecaf/zbar-wasm',
+    liveDemoUrl: 'https://codepen.io/undecaf/pen/ZEXmqdB',
+    element: <ZBarWasmScanner />,
+    devStatus: 'Done',
+  },
+  {
+    path: '#',
+    title: 'zxing-wasm',
+    sourceUrl:
+      'https://dannadori.medium.com/how-to-speed-up-the-barcode-scanner-with-wasm-efeaea47f9d4',
+    liveDemoUrl: 'https://miro.medium.com/v2/resize:fit:640/1*gAfK0Y3HXsnoAOPLT_hX1g.gif',
+    // element: <ZBarWasmScanner />,
+    devStatus: 'Developing',
   },
 ]
