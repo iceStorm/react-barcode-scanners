@@ -23,8 +23,7 @@
     "react-router-dom": "6.8.1",
     "rxing-wasm": "^0.1.17",
     "rxjs": "^7.8.0",
-    "scandit-web-datacapture-barcode": "^6.17.0-beta.1",
-    "scandit-web-datacapture-core": "^6.17.0-beta.1",
+    "scandit-sdk": "^5.13.0",
     "tslib": "^2.3.0",
     "zustand": "^4.3.7"
   },

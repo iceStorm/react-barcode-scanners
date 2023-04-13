@@ -1,129 +1,61 @@
-import { useEffect, useRef, useState } from 'react'
-import { Progress } from 'antd'
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { useEffect } from 'react'
 
-import {
-  configure,
-  loadingStatus,
-  DataCaptureContext,
-  Camera,
-  FrameSourceState,
-  DataCaptureView,
-  CameraPosition,
-} from 'scandit-web-datacapture-core'
+import * as ScanditSDK from 'scandit-sdk'
 
-import {
-  barcodeCaptureLoader,
-  Symbology,
-  BarcodeCapture,
-  BarcodeCaptureSettings,
-  BarcodeCaptureOverlay,
-} from 'scandit-web-datacapture-barcode'
 import { useBarcodeScannerStore } from '@react-barcode-scanners/web/data-access/store'
 
 export function ScanditScanner() {
   const { onBarcodesDetected$, onError$ } = useBarcodeScannerStore()
 
-  const [initScanditProgress, setInitScanditProgress] = useState(0)
-
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const barcodeCaptureRef = useRef<BarcodeCapture>()
-  const contextRef = useRef<DataCaptureContext>()
-
   useEffect(() => {
-    async function initScanditSdk() {
-      await configure({
-        licenseKey: import.meta.env.VITE_APP_SCANDIT_LICENSE_KEY,
-        libraryLocation:
-          'https://unpkg.com/browse/scandit-web-datacapture-barcode@6.x/build/engine/',
-        moduleLoaders: [barcodeCaptureLoader()],
-      })
-
-      contextRef.current = await DataCaptureContext.create()
-
-      const settings = new BarcodeCaptureSettings()
-      settings.enableSymbologies([
-        Symbology.Code128,
-        Symbology.Code39,
-        Symbology.QR,
-        Symbology.EAN8,
-        Symbology.UPCE,
-        Symbology.EAN13UPCA,
-      ])
-
-      barcodeCaptureRef.current = await BarcodeCapture.forContext(contextRef.current, settings)
-      barcodeCaptureRef.current.addListener({
-        didScan(barcodeCapture, session, frameData) {
-          const recognizedBarcodes = session.newlyRecognizedBarcodes
-
-          // recognizedBarcodes.forEach((barcode) => {
-          //   onBarcodeDetected(barcode.data || '')
-          // })
-          onBarcodesDetected$.next(recognizedBarcodes.map((barcode) => barcode.data || ''))
-        },
-      })
-
-      const view = await DataCaptureView.forContext(contextRef.current)
-      view.connectToElement(canvasRef.current!)
-      const overlay = await BarcodeCaptureOverlay.withBarcodeCaptureForView(
-        barcodeCaptureRef.current,
-        view
-      )
-
-      const cameraSettings = BarcodeCapture.recommendedCameraSettings
-      const camera = Camera.atPosition(CameraPosition.WorldFacing)
-      if (camera) {
-        await camera.applySettings(cameraSettings)
-        await contextRef.current.setFrameSource(camera)
-        await camera.switchToDesiredState(FrameSourceState.On)
-      }
-    }
-
-    if (!canvasRef.current) {
-      // console.log('canvasRef.current:', canvasRef.current, canvasRef.current.getContext('2d'))
-
-      initScanditSdk()
-        .then(() => {
-          onBarcodesDetected$.next(['Scandit SDK initialized'])
-        })
-        .catch((error) => {
-          onError$.next(error)
-        })
-    }
+    initScandit()
 
     return () => {
-      // barcodeCaptureRef.current?.setEnabled(false)
+      // ScanditSDK.resetConfigure()
     }
   }, [])
 
-  useEffect(() => {
-    loadingStatus.subscribe((info) => {
-      setInitScanditProgress(info.percentage || 0)
-    })
-  }, [])
+  async function initScandit() {
+    try {
+      await ScanditSDK.configure(import.meta.env.VITE_APP_SCANDIT_LICENSE_KEY, {
+        engineLocation: 'https://cdn.jsdelivr.net/npm/scandit-sdk@6.x/build/',
+      })
 
-  useEffect(() => {
-    if (initScanditProgress === 100) {
-      setTimeout(() => {
-        setInitScanditProgress(-1)
-      }, 1000)
+      const barcodePicker = await ScanditSDK.BarcodePicker.create(
+        document.getElementById('scandit-barcode-picker')!,
+        {
+          // enable some common symbologies
+          scanSettings: new ScanditSDK.ScanSettings({
+            enabledSymbologies: [ScanditSDK.Barcode.Symbology.CODE128],
+            blurryRecognition: true,
+            gpuAcceleration: true,
+            maxNumberOfCodesPerFrame: 10,
+          }),
+          guiStyle: ScanditSDK.BarcodePicker.GuiStyle.VIEWFINDER,
+          hideLogo: true,
+          enableCameraSwitcher: true,
+          cameraType: ScanditSDK.Camera.Type.BACK,
+          enablePinchToZoom: true,
+        }
+      )
+
+      // turn off video mirroring
+      barcodePicker.setMirrorImageEnabled(false)
+
+      barcodePicker.on('scan', (scanResult) => {
+        console.log(
+          'detected:',
+          scanResult.barcodes.map((barcode) => barcode.data)
+        )
+
+        onBarcodesDetected$.next(scanResult.barcodes.map((barcode) => barcode.data))
+      })
+    } catch (error: any) {
+      console.error(error)
+      onError$.next(error)
     }
-  }, [initScanditProgress])
+  }
 
-  return (
-    <>
-      {initScanditProgress !== -1 && (
-        <div className="container py-5 max-w-md mx-auto">
-          {<Progress type="line" percent={initScanditProgress} />}
-          <span>Initializing Scandit SDK...</span>
-        </div>
-      )}
-
-      <div>
-        <canvas ref={canvasRef} width={300} height={400} />
-
-        {/* {initScanditProgress === -1 && <WebCam className="h-full" />} */}
-        {/* <WebCam autoPlay width={300} height={400} /> */}
-      </div>
-    </>
-  )
+  return <div id="scandit-barcode-picker"></div>
 }
