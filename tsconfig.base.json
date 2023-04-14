@@ -16,6 +16,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "types": ["webrtc"],
     "paths": {
       "@react-barcode-scanners/shared/data-access/assets": [
         "libs/shared/data-access/assets/src/index.ts"
@@ -49,6 +50,9 @@
       ],
       "@react-barcode-scanners/web/ui/layout/barcode-scanner": [
         "libs/web/ui/layout/barcode-scanner/src/index.ts"
+      ],
+      "@react-barcode-scanners/web/ui/page/dannadori-wasm": [
+        "libs/web/ui/page/dannadori-wasm/src/index.ts"
       ],
       "@react-barcode-scanners/web/ui/page/home": ["libs/web/ui/page/home/src/index.ts"],
       "@react-barcode-scanners/web/ui/page/html5-qrcode": [

@@ -1,4 +1,5 @@
 import { BarcodeScannerLib } from '@react-barcode-scanners/shared/data-access/models'
+import { DannadoriWasmScanner } from '@react-barcode-scanners/web/ui/page/dannadori-wasm'
 import { ZBarWasmScanner } from '@react-barcode-scanners/web/ui/page/zbar-wasm'
 import { lazy } from 'react'
 
@@ -59,12 +60,12 @@ export const scannerPages: BarcodeScannerLib[] = [
     devStatus: 'Done',
   },
   {
-    path: '#',
-    title: 'zxing-wasm',
+    path: '/scanner/dannadori-wasm',
+    title: 'dannadori-wasm',
     sourceUrl:
-      'https://dannadori.medium.com/how-to-speed-up-the-barcode-scanner-with-wasm-efeaea47f9d4',
-    liveDemoUrl: 'https://miro.medium.com/v2/resize:fit:640/1*gAfK0Y3HXsnoAOPLT_hX1g.gif',
-    // element: <ZBarWasmScanner />,
-    devStatus: 'Developing',
+      'https://dannadori.medium.com/high-speed-and-high-accuracy-barcode-scanner-developed-with-reference-to-the-ai-model-of-google-a3b6631ab9df',
+    liveDemoUrl: 'https://flect-lab-web.s3-us-west-2.amazonaws.com/P01_wokers/t12_barcode-scanner/index.html',
+    element: <DannadoriWasmScanner />,
+    devStatus: 'Done',
   },
 ]

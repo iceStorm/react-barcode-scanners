@@ -22,7 +22,7 @@ export function LayoutBarcodeScanner() {
     <div className={clsx('fixed left-0 right-0 top-0 bottom-0', 'flex flex-col overflow-auto')}>
       <header className={clsx('bg-black text-white p-5')}>
         <div className="text-center">
-          <h1 className="text-6xl font-bold mb-3">{scannedParcels}</h1>
+          <h1 className="text-4xl font-bold">{scannedParcels}</h1>
           <p>parcels scanned successfully</p>
         </div>
       </header>

@@ -1,3 +1,5 @@
+/// <reference types="webrtc" />
+
 export function getImageFromCanvas(canvas: HTMLCanvasElement | null) {
   if (canvas) {
     return createImageBitmap(canvas)
@@ -48,4 +50,18 @@ export function imagedataToImage(imageData: ImageData) {
   ctx.putImageData(imageData, 0, 0)
 
   return canvas.toDataURL()
+}
+
+export function getVideoStream(): Promise<MediaStream> {
+  return new Promise((resolve, reject) => {
+    navigator.getUserMedia(
+      { video: {}, audio: true },
+      function (stream) {
+        resolve(stream)
+      },
+      function (error) {
+        reject(error)
+      }
+    )
+  })
 }

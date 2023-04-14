@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
 
 import clsx from 'clsx'
-import { BrowserMultiFormatReader } from '@zxing/library'
-
 import { notification } from 'antd'
 
 interface CameraPickerProps {
-  onStartScanning: (cameraId: MediaDeviceInfo) => void
+  onStartScanning: (camera: MediaDeviceInfo) => void
   onPauseScanning: () => void
+  onError?(error: Error): void
 
   isScanning?: boolean
 }
 
 export function CameraPicker(props: CameraPickerProps) {
-  const { onStartScanning, onPauseScanning, isScanning } = props
+  const { onStartScanning, onPauseScanning, onError, isScanning } = props
 
   const [isGettingCameras, setIsGettingCameras] = useState(true)
 
@@ -21,24 +20,41 @@ export function CameraPicker(props: CameraPickerProps) {
   const [cameraList, setCameraList] = useState<MediaDeviceInfo[]>([])
 
   useEffect(() => {
-    new BrowserMultiFormatReader()
-      .listVideoInputDevices()
-      .then((cameras) => {
-        setCameraList(cameras)
+    setIsGettingCameras(true)
 
-        if (cameras.length === 0) {
-          return notification.warning({
-            message: 'Warning',
-            description: 'No camera detected',
+    if (!navigator.mediaDevices?.enumerateDevices) {
+      onError?.(new Error('enumerateDevices() not supported.'))
+    } else {
+      // List cameras and microphones.
+      navigator.mediaDevices
+        .enumerateDevices()
+        .then((devices) => {
+          const videoDevices = devices.filter((d) => d.kind === 'videoinput')
+
+          if (videoDevices.length < 1) {
+            return notification.warning({
+              message: 'Warning',
+              description: 'No camera detected',
+            })
+          }
+
+          setCameraList(videoDevices)
+
+          console.log('Picked first camera:', videoDevices[0])
+          notification.info({
+            message: 'Info',
+            description: `Picked camera "${videoDevices[0].label || videoDevices[0].deviceId}"`,
           })
-        }
 
-        console.log('set first camera...')
-        setSelectedCamera(cameras[0])
-      })
-      .finally(() => {
-        setIsGettingCameras(false)
-      })
+          setSelectedCamera(videoDevices[0])
+        })
+        .catch((err) => {
+          console.error(`${err.name}: ${err.message}`)
+        })
+        .finally(() => {
+          setIsGettingCameras(false)
+        })
+    }
   }, [])
 
   function onDeviceIdChanged(cameraId: string) {
@@ -49,7 +65,7 @@ export function CameraPicker(props: CameraPickerProps) {
     <div className={clsx('p-3 bg-stone-300 border-b flex flex-col gap-3', 'sticky top-0 z-10')}>
       {!isGettingCameras && !isScanning && (
         <div className="text-center">
-          <label htmlFor="sourceSelect">Change video source:</label>
+          <label htmlFor="sourceSelect">Select Camera:</label>
           <select
             id="sourceSelect"
             style={{ maxWidth: '400px' }}

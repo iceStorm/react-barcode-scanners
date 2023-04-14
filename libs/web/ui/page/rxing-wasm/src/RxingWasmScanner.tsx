@@ -128,7 +128,18 @@ export function RxingWasmScanner() {
         isScanning={isScanning}
       />
 
-      {isScanning && <WebCam ref={webcamRef} videoConstraints={{ facingMode: 'environment' }} />}
+      {isScanning && (
+        <WebCam
+          ref={webcamRef}
+          forceScreenshotSourceSize={true}
+          videoConstraints={{
+            facingMode: 'environment',
+            width: { ideal: 4096 },
+            height: { ideal: 2160 },
+          }}
+          className="w-full max-h-full"
+        />
+      )}
     </div>
   )
 }
